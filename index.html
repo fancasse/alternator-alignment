@@ -1,4 +1,8 @@
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turbine & Generator Alignment App</title>
     <style>
         :root {
@@ -168,7 +172,12 @@
     <div class="header-bar">
         <h1 id="txt-title">محاذاة التوربينات والمولدات (Rim & Face)</h1>
         <div class="controls">
-@@ -38,75 +181,339 @@ <h1 id="txt-title">محاذاة التوربينات والمولدات (Rim & F
+            <select id="langSelect" onchange="changeLanguage()" style="width: auto;">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+            <button class="btn btn-theme" onclick="toggleTheme()" id="txt-theme-btn">الوضع الليلي 🌓</button>
         </div>
     </div>
 
@@ -242,7 +251,6 @@
             <div id="txt-r4" style="font-weight:600;">عند 270°:</div>
             <input type="number" id="f270_H" value="11.69"><input type="number" id="f270_G" value="11.96"><input type="number" id="f270_B" value="12.21"><input type="number" id="f270_D" value="11.95">
         </div>
-
     </div>
 
     <!-- أزرار الإجراءات الرئيسية -->
@@ -509,3 +517,4 @@
 </script>
 
 </body>
+</html>
