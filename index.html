@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbine & Generator Alignment App</title>
+    <title>Turbine & Generator Alignment App (With Cold Targets)</title>
     <style>
         :root {
             --bg-color: #f7fafc;
@@ -15,6 +15,8 @@
             --success: #2f855a;
             --danger: #c53030;
             --table-hdr: #edf2f7;
+            --target-bg: #fffaf0;
+            --target-border: #feebc8;
         }
 
         [data-theme="dark"] {
@@ -27,6 +29,8 @@
             --success: #48bb78;
             --danger: #f56565;
             --table-hdr: #4a5568;
+            --target-bg: #2c323f;
+            --target-border: #7b341e;
         }
 
         body {
@@ -40,7 +44,7 @@
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 0 auto;
             background: var(--card-bg);
             padding: 25px;
@@ -82,6 +86,11 @@
             background-color: var(--card-bg);
         }
 
+        .section-target {
+            background-color: var(--target-bg);
+            border: 1px solid var(--target-border);
+        }
+
         .section-title {
             font-weight: bold;
             font-size: 15px;
@@ -92,6 +101,7 @@
         }
 
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
 
         .face-grid {
@@ -202,6 +212,31 @@
         </div>
     </div>
 
+    <!-- 1. مكرر: مستهدفات الشركة المصنعة (جديد) -->
+    <div class="section section-target">
+        <div class="section-title" id="txt-sec-target" style="color: #c05621;">🎯 مستهدفات الشركة المصنعة (Cold Targets)</div>
+        <div class="grid-2">
+            <div>
+                <label id="txt-lbl-target-offset">المركز العمودي المطلوب للمولد (مم):</label>
+                <select id="targetOffsetDir" style="margin-bottom: 8px;">
+                    <option value="0" id="opt-offset-zero">0.00 (محاذاة صفرية تماماً)</option>
+                    <option value="1" id="opt-offset-up">مرتفع (+) الأعلى</option>
+                    <option value="-1" id="opt-offset-down">منخفض (-) الأسفل</option>
+                </select>
+                <input type="number" id="targetOffsetVal" value="0" step="any" placeholder="القيمة بالمليمتر">
+            </div>
+            <div>
+                <label id="txt-lbl-target-gap">فتحة وجه القارنة المطلوبة (Face Gap) مم:</label>
+                <select id="targetGapDir" style="margin-bottom: 8px;">
+                    <option value="0" id="opt-gap-zero">0.00 (وجه متوازٍ تماماً)</option>
+                    <option value="1" id="opt-gap-bottom">مفتوح من الأسفل (+) Open Bottom</option>
+                    <option value="-1" id="opt-gap-top">مفتوح من الأعلى (-) Open Top</option>
+                </select>
+                <input type="number" id="targetGapVal" value="0" step="any" placeholder="القيمة بالمليمتر">
+            </div>
+        </div>
+    </div>
+
     <!-- 2. خانات المسافات الهندسية -->
     <div class="section">
         <div class="section-title" id="txt-sec2">2. الأبعاد والمسافات الهندسية (مم)</div>
@@ -210,7 +245,7 @@
             <input type="number" id="distL1" value="660">
         </div>
         <div id="legsContainer" class="grid-2">
-            <!-- يتم توليد خانات المسافات هنا عبر الجافاسكريبت تلقائياً وفورياً -->
+            <!-- يتم توليد خانات المسافات هنا عبر الجافاسكريبت تلقائياً -->
         </div>
     </div>
 
@@ -282,11 +317,14 @@
 </div>
 
 <script>
-    // قاموس اللغات الثلاث (عربي، إنجليزي، فرنسي) بدون أي نقص
     const dictionary = {
         ar: {
             title: "محاذاة التوربينات والمولدات (Rim & Face)", themeBtn: "الوضع الليلي 🌓",
             sec1: "⚡ 1. نوع المعدة والأرجل", lblLegs: "إجمالي عدد الأرجل القابلة للضبط:", lblDia: "قطر القارنة (D) مم:",
+            secTarget: "🎯 مستهدفات الشركة المصنعة (Cold Targets)", lblTgtOffset: "المركز العمودي المطلوب للمولد (مم):",
+            lblTgtGap: "فتحة وجه القارنة المطلوبة (Face Gap) مم:", optOffsetZero: "0.00 (محاذاة صفرية تماماً)",
+            optOffsetUp: "مرتفع (+) الأعلى", optOffsetDown: "منخفض (-) الأسفل", optGapZero: "0.00 (وجه متوازٍ تماماً)",
+            optGapBottom: "مفتوح من الأسفل (+) Open Bottom", optGapTop: "مفتوح من الأعلى (-) Open Top",
             sec2: "📐 2. الأبعاد والمسافات الهندسية (مم)", lblL1: "القارنة إلى الرجل الأولى (L1):",
             sec3: "⭕ 3. قراءات المحيط Rim (μm ميكرومتر)", sec4: "📋 4. قراءات الوجه Face (مم)",
             thAngle: "زاوية التدوير", btnCalc: "احسب وتوليد المخطط", btnReset: "تصفير",
@@ -299,6 +337,10 @@
         en: {
             title: "Turbine & Generator Shaft Alignment (Rim & Face)", themeBtn: "Toggle Theme 🌓",
             sec1: "⚡ 1. Configuration & Leg Setup", lblLegs: "Total Adjustable Feet:", lblDia: "Coupling Diameter (D) mm:",
+            secTarget: "🎯 Manufacturer Cold Targets", lblTgtOffset: "Required Generator Vertical Offset (mm):",
+            lblTgtGap: "Required Face Gap (mm):", optOffsetZero: "0.00 (Perfect Zero Alignment)",
+            optOffsetUp: "Generator High (+)", optOffsetDown: "Generator Low (-)", optGapZero: "0.00 (Perfect Parallel Face)",
+            optGapBottom: "Open Bottom (+)", optGapTop: "Open Top (-)",
             sec2: "📐 2. Geometric Distances (mm)", lblL1: "Coupling to 1st Foot (L1):",
             sec3: "⭕ 3. Rim Dial Indicator Readings (μm)", sec4: "📋 4. Face Gap Readings (mm)",
             thAngle: "Rotation Angle", btnCalc: "Calculate & Generate Diagram", btnReset: "Reset All",
@@ -311,6 +353,10 @@
         fr: {
             title: "Lignage d'Arbre Turbine & Générateur (Rim & Face)", themeBtn: "Changer Thème 🌓",
             sec1: "⚡ 1. Configuration & Nombre de Pieds", lblLegs: "Nombre total de pieds réglables:", lblDia: "Diamètre d'accouplement (D) mm:",
+            secTarget: "🎯 Cibles à Froid du Fabricant (Cold Targets)", lblTgtOffset: "Décalage vertical requis du générateur (mm):",
+            lblTgtGap: "Écartement requis de la face (mm):", optOffsetZero: "0.00 (Lignage Zéro Parfait)",
+            optOffsetUp: "Générateur Haut (+)", optOffsetDown: "Générateur Bas (-)", optGapZero: "0.00 (Face Parallèle)",
+            optGapBottom: "Ouvert en Bas (+)", optGapTop: "Ouvert en Haut (-)",
             sec2: "📐 2. Dimensions Géométriques (mm)", lblL1: "Accouplement au 1er Pied (L1):",
             sec3: "⭕ 3. Lectures Périphériques Rim (μm)", sec4: "📋 4. Lectures Faciales Face (mm)",
             thAngle: "Angle de Rotation", btnCalc: "Calculer & Générer le Schéma", btnReset: "Réinitialiser",
@@ -322,7 +368,6 @@
         }
     };
 
-    // تغيير لغة الواجهة والاتجاهات
     function changeLanguage() {
         const lang = document.getElementById('langSelect').value;
         const dict = dictionary[lang];
@@ -335,6 +380,17 @@
         document.getElementById('txt-sec1').innerText = dict.sec1;
         document.getElementById('txt-lbl-legs').innerText = dict.lblLegs;
         document.getElementById('txt-lbl-dia').innerText = dict.lblDia;
+        
+        document.getElementById('txt-sec-target').innerText = dict.secTarget;
+        document.getElementById('txt-lbl-target-offset').innerText = dict.lblTgtOffset;
+        document.getElementById('txt-lbl-target-gap').innerText = dict.lblTgtGap;
+        document.getElementById('opt-offset-zero').innerText = dict.optOffsetZero;
+        document.getElementById('opt-offset-up').innerText = dict.optOffsetUp;
+        document.getElementById('opt-offset-down').innerText = dict.optOffsetDown;
+        document.getElementById('opt-gap-zero').innerText = dict.optGapZero;
+        document.getElementById('opt-gap-bottom').innerText = dict.optGapBottom;
+        document.getElementById('opt-gap-top').innerText = dict.optGapTop;
+
         document.getElementById('txt-sec2').innerText = dict.sec2;
         document.getElementById('txt-lbl-l1').innerText = dict.lblL1;
         document.getElementById('txt-sec3').innerText = dict.sec3;
@@ -351,14 +407,12 @@
         generateLegInputs(); 
     }
 
-    // تبديل السمة (الوضع الليلي والنهاري)
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const targetTheme = (currentTheme === 'dark') ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', targetTheme);
     }
 
-    // توليد خانات المسافات تلقائياً عند تغيير اختيار عدد الأرجل
     function generateLegInputs() {
         const legs = parseInt(document.getElementById('legsCount').value);
         const container = document.getElementById('legsContainer');
@@ -369,7 +423,7 @@
 
         for (let i = 1; i <= pairs; i++) {
             const div = document.createElement('div');
-            let labelText = (lang === 'ar') ? `من الرجل ${i} إلى الرجل ${i+1} (L${i+1}) مم:` : 
+            let labelText = (lang === 'ar') ? `من الرجل ${i} إلى الرجل \({i+1} (L\){i+1}) مم:` : 
                             (lang === 'fr') ? `Du Pied ${i} au Pied ${i+1} (L${i+1}) mm:` : `From Foot ${i} to Foot ${i+1} (L${i+1}) mm:`;
             
             let defaultVal = (i === 1 && legs === 4) ? 10417 : 1500;
@@ -382,17 +436,14 @@
         }
     }
 
-    // تشغيل الدالة أول مرة تلقائياً لتهيئة الصفحة بـ 4 أرجل وافتراضات المستخدم السابقة
     generateLegInputs();
 
-    // تصفير جميع المدخلات وإخفاء لوحة النتائج
     function resetAllFields() {
         const inputs = document.querySelectorAll('input');
         inputs.forEach(inp => inp.value = '');
         document.getElementById('resultsBox').style.display = 'none';
     }
 
-    // دالة الحساب والمعالجة الرياضية الميدانية الشاملة
     function calculateAlignment() {
         const lang = document.getElementById('langSelect').value;
         const dict = dictionary[lang];
@@ -401,16 +452,31 @@
         const dia = parseFloat(document.getElementById('couplingDiam').value) || 1;
         const L1 = parseFloat(document.getElementById('distL1').value) || 0;
 
-        // قراءات الـ Rim وتحويلها من ميكرومتر إلى مليمتر
+        // مستهدفات المصنع (Cold Targets)
+        const tOffsetDir = parseInt(document.getElementById('targetOffsetDir').value);
+        const tOffsetVal = parseFloat(document.getElementById('targetOffsetVal').value) || 0;
+        const targetOffset = tOffsetDir * tOffsetVal; // حاصل ضرب الاتجاه في القيمة
+
+        const tGapDir = parseInt(document.getElementById('targetGapDir').value);
+        const tGapVal = parseFloat(document.getElementById('targetGapVal').value) || 0;
+        const targetGap = tGapDir * tGapVal;
+
+        // قراءات الـ Rim وتحويلها لمليمتر
         const r0 = (parseFloat(document.getElementById('rim0').value) || 0) / 1000;
         const r90 = (parseFloat(document.getElementById('rim90').value) || 0) / 1000;
         const r180 = (parseFloat(document.getElementById('rim180').value) || 0) / 1000;
         const r270 = (parseFloat(document.getElementById('rim270').value) || 0) / 1000;
 
-        const vOffset = (r0 - r180) / 2;
+        // الانحراف الميداني الفعلي للرأس (طرح التارجت المستهدف للمركز)
+        const vOffset = ((r0 - r180) / 2) - targetOffset;
         const hOffsetVal = (r270 - r90) / 2;
 
-        // التحقق من اتزان وموثوقية الساعات
+        // حساب متوسط فجوات الوجه لإلغاء الـ Runout وطرح التارجت المستهدف للوجه
+        const avg_H = (parseFloat(document.getElementById('f0_H').value) + parseFloat(document.getElementById('f90_H').value) + parseFloat(document.getElementById('f180_H').value) + parseFloat(document.getElementById('f270_H').value)) / 4;
+        const avg_B = (parseFloat(document.getElementById('f0_B').value) + parseFloat(document.getElementById('f90_B').value) + parseFloat(document.getElementById('f180_B').value) + parseFloat(document.getElementById('f270_B').value)) / 4;
+        const vGap = (avg_B - avg_H) - targetGap; 
+
+        // التحقق من اتزان الساعات
         const validityDiff = Math.abs((r0 + r180) - (r90 + r270));
         const statusDiv = document.getElementById('validityStatus');
         if (validityDiff > 0.05) {
@@ -423,12 +489,7 @@
             statusDiv.style.color = "var(--success)";
         }
 
-        // حساب متوسطات فجوات الوجه لإلغاء الـ Runout للعمود الدوّار تلقائياً
-        const avg_H = (parseFloat(document.getElementById('f0_H').value) + parseFloat(document.getElementById('f90_H').value) + parseFloat(document.getElementById('f180_H').value) + parseFloat(document.getElementById('f270_H').value)) / 4;
-        const avg_B = (parseFloat(document.getElementById('f0_B').value) + parseFloat(document.getElementById('f90_B').value) + parseFloat(document.getElementById('f180_B').value) + parseFloat(document.getElementById('f270_B').value)) / 4;
-        const vGap = avg_B - avg_H;
-
-        // تجميع المسافات المتراكمة بدقة هندسية لكل زوج أرجل متتالٍ
+        // تجميع المسافات المتراكمة للأرجل
         let accumulatedDistances = [L1];
         const pairs = (legs / 2) - 1;
         let currentSum = L1;
@@ -439,7 +500,7 @@
             accumulatedDistances.push(currentSum);
         }
 
-        // حساب وإظهار نتائج سماكة الشيمز لكل رجل
+        // حساب الشيمز لكل رجل وعرضها
         const resContainer = document.getElementById('vResultsContainer');
         resContainer.innerHTML = '';
         let shimsValues = [];
@@ -457,16 +518,13 @@
             resContainer.appendChild(div);
         }
 
-        // حركة التصحيح الأفقي المشتركة
         let hTextAction = hOffsetVal >= 0 ? dict.right : dict.left;
         document.getElementById('hMoveVal').innerText = `${Math.abs(hOffsetVal).toFixed(3)} mm ${hTextAction}`;
 
-        // رسم الـ SVG التفاعلي بدون أي تداخل
         drawDynamicSVG(legs, shimsValues, hOffsetVal, dict);
         document.getElementById('resultsBox').style.display = 'block';
     }
 
-    // كود توليد ورسم المخطط الحركي للأرجل بشكل متجاوب ومتناسق مع السِمات واللغات
     function drawDynamicSVG(legs, shimsValues, horiz, dict) {
         let legsDrawing = '';
         const totalPairs = legs / 2;
@@ -481,40 +539,4 @@
             
             legsDrawing += `
                 <rect x="${cx - 8}" y="95" width="16" height="20" rx="3" fill="${col}"/>
-                <text x="${cx}" y="132" font-size="10" font-weight="600" fill="var(--text-color)" text-anchor="middle">${dict.legText} ${i+1}</text>
-                <text x="${cx}" y="35" font-size="10" font-weight="bold" fill="${col}" text-anchor="middle">${sVal >= 0 ? '+' : '-'}${Math.abs(sVal).toFixed(2)}mm</text>
-                <line x1="${cx}" y1="50" x2="${cx}" y2="95" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="3,3" />
-            `;
-        }
-
-        const svgHtml = `
-            <svg width="100%" height="200" viewBox="0 0 560 200" style="background: var(--bg-color); border-radius:8px; border: 1px solid var(--border-color);">
-                <!-- التوربين الثابت -->
-                <rect x="10" y="65" width="110" height="16" fill="#718096" rx="2"/>
-                <rect x="120" y="45" width="14" height="56" fill="#4a5568" rx="2"/>
-                
-                <!-- المولد والعمود القابل للضبط -->
-                <rect x="140" y="45" width="14" height="56" fill="#2b6cb0" rx="2"/>
-                <rect x="154" y="65" width="380" height="16" fill="#3182ce" rx="2"/>
-                <rect x="200" y="48" width="320" height="50" fill="rgba(66,153,225,0.08)" stroke="#3182ce" stroke-width="1.5" rx="4"/>
-
-                ${legsDrawing}
-
-                <!-- دليل الألوان اللفظي والبصري بالأسفل -->
-                <g transform="translate(20, 172)" font-size="11" fill="var(--text-color)">
-                    <circle cx="10" cy="5" r="5" fill="#38a169"/>
-                    <text x="22" y="9">${dict.add}</text>
-                    
-                    <circle cx="160" cy="5" r="5" fill="#e53e3e"/>
-                    <text x="172" y="9">${dict.remove}</text>
-                    
-                    <text x="340" y="9" font-weight="bold" fill="var(--secondary)">H: ${Math.abs(horiz).toFixed(3)} mm</text>
-                </g>
-            </svg>
-        `;
-        document.getElementById('svgContainer').innerHTML = svgHtml;
-    }
-</script>
-
-</body>
-</html>
+                <text x="${cx}" y="132
