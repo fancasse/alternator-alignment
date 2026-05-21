@@ -3,43 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة محاذاة التوربينات والمولدات الاحترافية</title>
+    <title>حاسبة محاذاة التوربينات والمولدات العملاقة (حتى 12 رجل)</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-            color: #333;
+            background-color: #f0f4f8; margin: 0; padding: 20px; color: #333;
         }
         .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 1000px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
         h1 { text-align: center; color: #1a365d; margin-bottom: 5px; }
         .subtitle { text-align: center; color: #718096; margin-bottom: 25px; font-size: 14px; }
         .section {
-            margin-bottom: 25px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: #f7fafc;
+            margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f7fafc;
         }
         .section-title {
-            font-weight: bold;
-            color: #2b6cb0;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 5px;
-            font-size: 16px;
+            font-weight: bold; color: #2b6cb0; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; font-size: 16px;
         }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+        .dynamic-distances {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 10px;
+        }
         label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #4a5568; }
         input, select {
             width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; background-color: #fff;
@@ -56,26 +41,29 @@
             margin-top: 25px; padding: 25px; background: #f0fff4; border: 2px solid #38a169; border-radius: 8px; display: none;
         }
         .result-card { background: #fff; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; border-right: 4px solid #3182ce; }
-        .result-item { margin-bottom: 8px; font-size: 15px; font-weight: 500; }
+        .result-item { margin-bottom: 8px; font-size: 15px; font-weight: 500; border-bottom: 1px dashed #edf2f7; padding-bottom: 5px; }
         .result-item span { font-weight: bold; color: #e53e3e; }
-        .visual-container { text-align: center; margin-top: 20px; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .visual-container { text-align: center; margin-top: 20px; background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; overflow-x: auto; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>حاسبة المحاذاة المتقدمة (Rim & Face)</h1>
-    <div class="subtitle">تطبيق ميداني مخصص لمحاذاة التوربينات والمولدات (دعم 4 أو 6 أرجل وتوليد مخططات توضيحية)</div>
+    <h1>حاسبة المحاذاة المتقدمة للتوربينات (4 - 12 رجل)</h1>
+    <div class="subtitle">تطبيق ميداني مرن يدعم قواعد التثبيت المتعددة للمعدات والضواغط العملاقة</div>
 
     <!-- الإعدادات الهيكلية -->
     <div class="section">
         <div class="section-title">1. نوع المعدة وتوزيع الأرجل</div>
         <div class="grid-2">
             <div>
-                <label>عدد أرجل المولد/المعدة المراد ضبطها:</label>
-                <select id="legsCount" onchange="toggleLegsInputs()">
-                    <option value="4">4 أرجل (تقليدي)</option>
-                    <option value="6">6 أرجل (معدات ضخمة / توربينات)</option>
+                <label>إجمالي عدد أرجل المعدة المراد ضبطها:</label>
+                <select id="legsCount" onchange="generateDistanceInputs()">
+                    <option value="4">4 أرجل (معدات تقليدية)</option>
+                    <option value="6">6 أرجل (معدات متوسطة)</option>
+                    <option value="8">8 أرجل (توربينات مركبة)</option>
+                    <option value="10">10 أرجل (توربينات عملاقة)</option>
+                    <option value="12">12 رجل (خطوط عمود ممتدة)</option>
                 </select>
             </div>
             <div>
@@ -85,22 +73,15 @@
         </div>
     </div>
 
-    <!-- الأبعاد الهندسية المسافات -->
+    <!-- الأبعاد الهندسية الديناميكية -->
     <div class="section">
         <div class="section-title">2. الأبعاد والمسافات الهندسية (بالمليمتر)</div>
-        <div class="grid-3">
-            <div>
-                <label>القارنة إلى الرجل الأمامية (L1):</label>
-                <input type="number" id="distFront" step="any" value="660">
-            </div>
-            <div id="midLegDiv" style="display:none;">
-                <label>من الرجل الأمامية إلى الوسطى (L_mid):</label>
-                <input type="number" id="distMid" step="any" value="2000">
-            </div>
-            <div>
-                <label id="rearLegLabel">من الرجل الأمامية إلى الخلفية (L2):</label>
-                <input type="number" id="distRear" step="any" value="10417">
-            </div>
+        <div>
+            <label>المسافة من القارنة إلى الرجل الأولى (L1):</label>
+            <input type="number" id="distFront" step="any" value="660" style="max-width: 300px; margin-bottom: 15px;">
+        </div>
+        <div id="dynamicDistancesContainer" class="dynamic-distances">
+            <!-- سيتم توليد خانات المسافات هنا عبر الجافاسكريبت -->
         </div>
     </div>
 
@@ -132,14 +113,12 @@
 
     <!-- مخرجات الحسابات والرسومات التوضيحية -->
     <div id="resultsBox" class="results">
-        <h2 style="color: #22543d; border-bottom: 2px solid #cbd5e0; padding-bottom: 10px;">نتائج التصحيح والمخطط الميداني</h2>
+        <h2 style="color: #22543d; border-bottom: 2px solid #cbd5e0; padding-bottom: 10px;">نتائج التصحيح والمخطط الميداني للمعدات المتعددة الأرجل</h2>
         <div id="validityMsg" style="font-weight:bold; margin-bottom:15px;"></div>
         
         <div class="result-card">
-            <div class="section-title">📦 الرقائق المعدنية المطلوبة عمودياً (Shims)</div>
-            <div class="result-item">الأرجل الأمامية (Front): <span id="vFront">--</span></div>
-            <div class="result-item" id="vMidRow" style="display:none;">الأرجل الوسطى (Middle): <span id="vMid">--</span></div>
-            <div class="result-item">الأرجل الخلفية (Rear): <span id="vRear">--</span></div>
+            <div class="section-title">📦 الرقائق المعدنية المطلوبة عمودياً لكل رجل (Shims)</div>
+            <div id="shimsResultsContainer"></div>
         </div>
 
         <div class="result-card">
@@ -149,25 +128,34 @@
 
         <!-- المخطط الذكي التوضيحي -->
         <div class="visual-container">
-            <div class="section-title" style="border:none; margin:0;">🗺️ مخطط الذكاء الاصطناعي التوضيحي لحالة المعدة</div>
-            <div id="svgVisual"></div>
+            <div class="section-title" style="border:none; margin:0;">🗺️ مخطط محاكاة الأرجل الحركي تلقائي التلوين</div>
+            <div id="svgVisual" style="min-width: 750px;"></div>
         </div>
     </div>
 </div>
 
 <script>
-function toggleLegsInputs() {
-    const legs = document.getElementById('legsCount').value;
-    const midDiv = document.getElementById('midLegDiv');
-    const rearLabel = document.getElementById('rearLegLabel');
-    if(legs === "6") {
-        midDiv.style.display = "block";
-        rearLabel.innerText = "من الرجل الوسطى إلى الخلفية (L3):";
-    } else {
-        midDiv.style.display = "none";
-        rearLabel.innerText = "من الرجل الأمامية إلى الخلفية (L2):";
+// توليد خانات المسافات ديناميكياً بناءً على عدد الأرجل المختار
+function generateDistanceInputs() {
+    const legs = parseInt(document.getElementById('legsCount').value);
+    const container = document.getElementById('dynamicDistancesContainer');
+    container.innerHTML = '';
+    
+    // عدد المسافات البينية للأزواج من الأرجل (مثلاً 6 أرجل تعني 3 أزواج، أي مسافتين بينيتين)
+    const distancePairs = (legs / 2) - 1;
+    
+    for(let i = 1; i <= distancePairs; i++) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <label>من الرجل ${i} إلى الرجل ${i+1} (L${i+1}):</label>
+            <input type="number" id="dist_L${i+1}" step="any" value="${i === 1 && legs === 4 ? 10417 : 1500}">
+        `;
+        container.appendChild(div);
     }
 }
+
+// تشغيل الدالة أول مرة تلقائياً لتهيئة الـ 4 أرجل الافتراضية
+generateDistanceInputs();
 
 function resetForm() {
     const inputs = document.querySelectorAll('input');
@@ -176,100 +164,102 @@ function resetForm() {
 }
 
 function calculateAlignment() {
-    const legs = document.getElementById('legsCount').value;
+    const legs = parseInt(document.getElementById('legsCount').value);
     const dia = parseFloat(document.getElementById('couplingDiam').value) || 1;
     const L1 = parseFloat(document.getElementById('distFront').value) || 0;
-    const L2 = parseFloat(document.getElementById('distRear').value) || 0;
-    const L_mid = parseFloat(document.getElementById('distMid').value) || 0;
 
+    // جلب قراءات المحيط Rim
     const r0 = (parseFloat(document.getElementById('rim0').value) || 0) / 1000;
     const r90 = (parseFloat(document.getElementById('rim90').value) || 0) / 1000;
     const r180 = (parseFloat(document.getElementById('rim180').value) || 0) / 1000;
     const r270 = (parseFloat(document.getElementById('rim270').value) || 0) / 1000;
 
-    // التحقق من صحة القراءات
-    const validityDiff = Math.abs((r0 + r180) - (r90 + r270));
-    const validityMsg = document.getElementById('validityMsg');
-    if(validityDiff > 0.05) {
-        validityMsg.innerHTML = "⚠️ تنبيه: قراءات الـ Rim غير متزنة تماماً، يفضل فحص جودة التثبيت.";
-        validityMsg.style.color = "#c53030";
-    } else {
-        validityMsg.innerHTML = "✅ قراءات الـ Rim متزنة وممتازة.";
-        validityMsg.style.color = "#2f855a";
-    }
-
     const vOffset = (r0 - r180) / 2;
     const hOffsetVal = (r270 - r90) / 2;
 
+    // حساب متوسط قيم الوجه Face لإلغاء الـ Runout
     const avg_H = (parseFloat(document.getElementById('f0_H').value) + parseFloat(document.getElementById('f90_H').value) + parseFloat(document.getElementById('f180_H').value) + parseFloat(document.getElementById('f270_H').value)) / 4;
     const avg_B = (parseFloat(document.getElementById('f0_B').value) + parseFloat(document.getElementById('f90_B').value) + parseFloat(document.getElementById('f180_B').value) + parseFloat(document.getElementById('f270_B').value)) / 4;
     const vGap = avg_B - avg_H;
 
-    let shimFront = vOffset + (vGap * L1 / dia);
-    let shimMid = 0;
-    let shimRear = 0;
+    // تجميع المسافات المتراكمة من القارنة إلى كل زوج من الأرجل
+    let accumulatedDistances = [L1]; // الرجل الأولى مسافتها L1
+    const distancePairs = (legs / 2) - 1;
+    let currentTotalDist = L1;
 
-    if (legs === "4") {
-        shimRear = vOffset + (vGap * (L1 + L2) / dia);
-        document.getElementById('vMidRow').style.display = "none";
-    } else {
-        shimMid = vOffset + (vGap * (L1 + L_mid) / dia);
-        shimRear = vOffset + (vGap * (L1 + L_mid + L2) / dia);
-        document.getElementById('vMid').innerText = Math.abs(shimMid).toFixed(2) + " مم " + (shimMid >= 0 ? "(إضافة رقائق)" : "(إزالة رقائق)");
-        document.getElementById('vMidRow').style.display = "block";
+    for(let i = 1; i <= distancePairs; i++) {
+        let nextDist = parseFloat(document.getElementById(`dist_L${i+1}`).value) || 0;
+        currentTotalDist += nextDist;
+        accumulatedDistances.push(currentTotalDist);
     }
 
-    document.getElementById('vFront').innerText = Math.abs(shimFront).toFixed(2) + " مم " + (shimFront >= 0 ? "(إضافة رقائق)" : "(إزالة رقائق)");
-    document.getElementById('vRear').innerText = Math.abs(shimRear).toFixed(2) + " مم " + (shimRear >= 0 ? "(إضافة رقائق)" : "(إزالة رقائق)");
+    // حساب قيم الشيمز لكل رجل وعرضها
+    const shimsResultsContainer = document.getElementById('shimsResultsContainer');
+    shimsResultsContainer.innerHTML = '';
+    
+    let shimsValues = [];
+
+    for(let i = 0; i < accumulatedDistances.length; i++) {
+        let dist = accumulatedDistances[i];
+        let shimCalculated = vOffset + (vGap * dist / dia);
+        shimsValues.push(shimCalculated);
+
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `الرجل رقم ${i+1} (مسافة ${dist.toFixed(0)} مم): <span>${Math.abs(shimCalculated).toFixed(2)} مم</span> ${shimCalculated >= 0 ? "(إضافة رقائق Shim UP)" : "(إزالة رقائق Shim DOWN)"}`;
+        shimsResultsContainer.appendChild(item);
+    }
+
     document.getElementById('hOffset').innerText = Math.abs(hOffsetVal).toFixed(3) + " مم " + (hOffsetVal >= 0 ? "(دفع يميناً)" : "(دفع يساراً)");
 
-    // رسم المخطط التوضيحي الديناميكي بناءً على البيانات المستخرجة
-    generateSVGDiagram(legs, shimFront, shimMid, shimRear, hOffsetVal);
+    // رسم المخطط البياني الديناميكي للأرجل (حتى 12 رجل)
+    generateDynamicSVG(legs, shimsValues, hOffsetVal);
     document.getElementById('resultsBox').style.display = 'block';
 }
 
-function generateSVGDiagram(legs, sf, sm, sr, horiz) {
+function generateDynamicSVG(legs, shimsValues, horiz) {
     let legsDrawing = '';
-    if(legs === "4") {
-        legsDrawing = `
-            <rect x="250" y="90" width="20" height="20" fill="${sf >= 0 ? '#38a169' : '#e53e3e'}"/>
-            <text x="260" y="125" font-size="10" text-anchor="middle">Front Foot</text>
-            <rect x="420" y="90" width="20" height="20" fill="${sr >= 0 ? '#38a169' : '#e53e3e'}"/>
-            <text x="430" y="125" font-size="10" text-anchor="middle">Rear Foot</text>
-        `;
-    } else {
-        legsDrawing = `
-            <rect x="230" y="90" width="18" height="20" fill="${sf >= 0 ? '#38a169' : '#e53e3e'}"/>
-            <text x="239" y="125" font-size="9" text-anchor="middle">Front</text>
-            <rect x="330" y="90" width="18" height="20" fill="${sm >= 0 ? '#38a169' : '#e53e3e'}"/>
-            <text x="339" y="125" font-size="9" text-anchor="middle">Middle</text>
-            <rect x="430" y="90" width="18" height="20" fill="${sr >= 0 ? '#38a169' : '#e53e3e'}"/>
-            <text x="439" y="125" font-size="9" text-anchor="middle">Rear</text>
+    const totalPairs = legs / 2;
+    
+    // توزيع الأرجل على مسافات متساوية في الرسم الهندسي مهما كان عددها ليتناسق التصميم
+    const startX = 220;
+    const endX = 490;
+    const stepX = totalPairs > 1 ? (endX - startX) / (totalPairs - 1) : 0;
+
+    for(let i = 0; i < totalPairs; i++) {
+        let currentX = startX + (i * stepX);
+        let shimVal = shimsValues[i];
+        let color = shimVal >= 0 ? '#38a169' : '#e53e3e'; // أخضر للإضافة وأحمر للإزالة
+        
+        legsDrawing += `
+            <rect x="${currentX}" y="90" width="16" height="20" fill="${color}"/>
+            <text x="${currentX + 8}" y="125" font-size="9" font-weight="bold" text-anchor="middle">رجل ${i+1}</text>
+            <text x="${currentX + 8}" y="40" font-size="8" font-weight="bold" fill="#2d3748" text-anchor="middle">${Math.abs(shimVal).toFixed(1)}mm</text>
         `;
     }
 
     const svgHtml = `
-        <svg width="100%" height="180" viewBox="0 0 550 180" style="background:#f8fafc; border-radius:6px;">
-            <!-- شافت التوربين الثابت -->
-            <rect x="20" y="65" width="120" height="15" fill="#718096"/>
-            <rect x="140" y="50" width="15" height="45" fill="#4a5568"/>
-            <text x="70" y="100" font-size="12" font-weight="bold" fill="#4a5568">التوربين الثابت</text>
+        <svg width="100%" height="190" viewBox="0 0 550 190" style="background:#f8fafc; border-radius:6px;">
+            <!-- عمود التوربين الثابت المرجعي -->
+            <rect x="10" y="65" width="110" height="15" fill="#718096"/>
+            <rect x="120" y="50" width="15" height="45" fill="#4a5568"/>
+            <text x="65" y="100" font-size="11" font-weight="bold" fill="#4a5568">التوربين الثابت</text>
 
-            <!-- شافت المولد المراد تعديله -->
-            <rect x="160" y="50" width="15" height="45" fill="#2b6cb0"/>
-            <rect x="175" y="65" width="310" height="15" fill="#3182ce"/>
-            <rect x="210" y="40" width="260" height="50" fill="#ebf8ff" stroke="#3182ce" stroke-width="2"/>
-            <text x="340" y="70" font-size="14" font-weight="bold" fill="#2b6cb0">المولد (المعدة القابلة للضبط)</text>
+            <!-- القارنة والعمود القابل للضبط -->
+            <rect x="140" y="50" width="15" height="45" fill="#2b6cb0"/>
+            <rect x="155" y="65" width="365" height="15" fill="#3182ce"/>
+            <rect x="200" y="45" width="310" height="45" fill="#ebf8ff" stroke="#3182ce" stroke-width="1.5"/>
+            <text x="350" y="72" font-size="12" font-weight="bold" fill="#2b6cb0">الجسم المتحرك (${legs} أرجل)</text>
 
-            <!-- القواعد والأرجل -->
+            <!-- توليد الأرجل ميكانيكياً -->
             ${legsDrawing}
 
-            <!-- دليلك اللوني -->
-            <circle cx="30" cy="150" r="6" fill="#38a169"/>
-            <text x="45" y="154" font-size="11">أخضر = إضافة شيمز (Shim UP)</text>
-            <circle cx="230" cy="150" r="6" fill="#e53e3e"/>
-            <text x="245" y="154" font-size="11">أحمر = إزالة شيمز (Shim DOWN)</text>
-            <text x="420" y="154" font-size="11" font-weight="bold" fill="#2b6cb0">التحريك الأفقي الجانبي: ${Math.abs(horiz).toFixed(3)} مم</text>
+            <!-- مفتاح الخريطة اللوني والبياني -->
+            <circle cx="25" cy="165" r="5" fill="#38a169"/>
+            <text x="35" y="169" font-size="10">إضافة شيمز (+)</text>
+            <circle cx="140" cy="165" r="5" fill="#e53e3e"/>
+            <text x="150" y="169" font-size="10">إزالة شيمز (-)</text>
+            <text x="320" y="169" font-size="11" font-weight="bold" fill="#2b6cb0">تعديل الحركة الأفقية المشتركة: ${Math.abs(horiz).toFixed(3)} مم</text>
         </svg>
     `;
     document.getElementById('svgVisual').innerHTML = svgHtml;
