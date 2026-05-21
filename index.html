@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة محاذاة التوربينات والمولدات</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #219653;
+        }
+        .results {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eef9f1;
+            border-left: 5px solid #27ae60;
+            border-radius: 4px;
+            display: none;
+        }
+        .result-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .result-item span {
+            font-weight: bold;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>حاسبة محاذاة العمود (Rim & Face)</h1>
+    <p style="text-align: center; color: #666;">خاصة بطريقة تدوير عمود واحد وحساب متوسطات قيم الوجه</p>
+
+    <!-- الأبعاد الهندسية -->
+    <div class="section">
+        <div class="section-title">1. الأبعاد الهندسية للمعدات (بالمليمتر)</div>
+        <div class="grid-3">
+            <div>
+                <label>قطر القارنة (D):</label>
+                <input type="number" id="couplingDiam" step="any" value="625">
+            </div>
+            <div>
+                <label>القارنة إلى القدم الأمامية (L1):</label>
+                <input type="number" id="distFront" step="any" value="660">
+            </div>
+            <div>
+                <label>بين القدم الأمامية والخلفية (L2):</label>
+                <input type="number" id="distRear" step="any" value="10417">
+            </div>
+        </div>
+    </div>
+
+    <!-- قراءات المحيط Rim -->
+    <div class="section">
+        <div class="section-title">2. قراءات المحيط Rim (بالميكرومتر أو الـ Mil)</div>
+        <div class="grid-4">
+            <div>
+                <label>زاوية 0° (Top):</label>
+                <input type="number" id="rim0" value="900">
+            </div>
+            <div>
+                <label>زاوية 90° (Right):</label>
+                <input type="number" id="rim90" value="562">
+            </div>
+            <div>
+                <label>زاوية 180° (Bottom):</label>
+                <input type="number" id="rim180" value="306">
+            </div>
+            <div>
+                <label>زاوية 270° (Left):</label>
+                <input type="number" id="rim270" value="637">
+            </div>
+        </div>
+    </div>
+
+    <!-- قراءات الوجه Face -->
+    <div class="section">
+        <div class="section-title">3. قراءات الوجه Face عند الزوايا المختلفة (بالمليمتر)</div>
+        
+        <p style="font-size:12px; color:#7f8c8d; margin:5px 0;">عند تدوير العمود لزاوية 0°:</p>
+        <div class="grid-4">
+            <input type="number" id="f0_H" placeholder="H (0°)" value="11.80">
+            <input type="number" id="f0_G" placeholder="G (90°)" value="12.03">
+            <input type="number" id="f0_B" placeholder="B (180°)" value="12.31">
+            <input type="number" id="f0_D" placeholder="D (270°)" value="12.05">
+        </div>
+
+        <p style="font-size:12px; color:#7f8c8d; margin:15px 0 5px 0;">عند تدوير العمود لزاوية 90°:</p>
+        <div class="grid-4">
+            <input type="number" id="f90_H" placeholder="H" value="11.79">
+            <input type="number" id="f90_G" placeholder="G" value="12.00">
+            <input type="number" id="f90_B" placeholder="B" value="12.27">
+            <input type="number" id="f90_D" placeholder="D" value="12.03">
+        </div>
+
+        <p style="font-size:12px; color:#7f8c8d; margin:15px 0 5px 0;">عند تدوير العمود لزاوية 180°:</p>
+        <div class="grid-4">
+            <input type="number" id="f180_H" placeholder="H" value="11.74">
+            <input type="number" id="f180_G" placeholder="G" value="12.03">
+            <input type="number" id="f180_B" placeholder="B" value="12.26">
+            <input type="number" id="f180_D" placeholder="D" value="12.01">
+        </div>
+
+        <p style="font-size:12px; color:#7f8c8d; margin:15px 0 5px 0;">عند تدوير العمود لزاوية 270°:</p>
+        <div class="grid-4">
+            <input type="number" id="f270_H" placeholder="H" value="11.69">
+            <input type="number" id="f270_G" placeholder="G" value="11.96">
+            <input type="number" id="f270_B" placeholder="B" value="12.21">
+            <input type="number" id="f270_D" placeholder="D" value="11.95">
+        </div>
+    </div>
+
+    <button onclick="calculateAlignment()">احسب قيم التعديل الحالية</button>
+
+    <!-- صندوق النتائج -->
+    <div id="resultsBox" class="results">
+        <h2>نتائج الحسابات والتصحيح</h2>
+        <div id="validityMsg" style="font-weight:bold; margin-bottom:15px;"></div>
+        
+        <div class="section-title">التعديل العمودي المطلوب (Vertical)</div>
+        <div class="result-item">الأقدام الأمامية (Front Feet): <span id="vFront">--</span></div>
+        <div class="result-item">الأقدام الخلفية (Rear Feet): <span id="vRear">--</span></div>
+
+        <div class="section-title" style="margin-top:15px;">التعديل الأفقي المطلوب (Horizontal)</div>
+        <div class="result-item">الإزاحة المركزية الأفقية: <span id="hOffset">--</span></div>
+        <p style="font-size:13px; color:#555;">* ملحوظة: نظراً لأن الانحراف الزاوي الأفقي شبه منعدم، يتم تحريك المولد بشكل متوازٍ بناءً على إزاحة المركز.</p>
+    </div>
+</div>
+
+<script>
+function calculateAlignment() {
+    // 1. جلب الأبعاد
+    const dia = parseFloat(document.getElementById('couplingDiam').value);
+    const L1 = parseFloat(document.getElementById('distFront').value);
+    const L2 = parseFloat(document.getElementById('distRear').value);
+
+    // 2. جلب قراءات الـ Rim وتحويلها لمليمتر (تقسيم على 1000)
+    const r0 = parseFloat(document.getElementById('rim0').value) / 1000;
+    const r90 = parseFloat(document.getElementById('rim90').value) / 1000;
+    const r180 = parseFloat(document.getElementById('rim180').value) / 1000;
+    const r270 = parseFloat(document.getElementById('rim270').value) / 1000;
+
+    // التحقق من صحة قراءات Rim
+    const vertSum = r0 + r180;
+    const horizSum = r90 + r270;
+    const validityDiff = Math.abs(vertSum - horizSum);
+    const validityMsg = document.getElementById('validityMsg');
+    
+    if(validityDiff > 0.05) {
+        validityMsg.innerHTML = "⚠️ تنبيه: الفارق بين المجاميع المتقابلة للـ Rim كبير (" + (validityDiff*1000).toFixed(1) + " ميكرومتر). تأكد من ثبات الساعة!";
+        validityMsg.style.color = "#d35400";
+    } else {
+        validityMsg.innerHTML = "✅ قراءات الـ Rim متزنة وموثوقة.";
+        validityMsg.style.color = "#27ae60";
+    }
+
+    // حساب الانحراف القطري (Radial Offsets)
+    const vOffset = (r0 - r180) / 2;
+    const hOffsetVal = (r270 - r90) / 2;
+
+    // 3. جلب وحساب متوسطات الوجه (Face) إلغاء الـ Runout
+    const avg_H = (parseFloat(document.getElementById('f0_H').value) + parseFloat(document.getElementById('f90_H').value) + parseFloat(document.getElementById('f180_H').value) + parseFloat(document.getElementById('f270_H').value)) / 4;
+    const avg_B = (parseFloat(document.getElementById('f0_B').value) + parseFloat(document.getElementById('f90_B').value) + parseFloat(document.getElementById('f180_B').value) + parseFloat(document.getElementById('f270_B').value)) / 4;
+
+    // الانحراف الزاوي العمودي (Angular Gap)
+    const vGap = avg_B - avg_H; // الفجوة بين الأسفل والأعلى
+
+    // 4. معادلات حساب الشيمز للأقدام (المعادلة القياسية للمحاذاة)
+    // كمية الشيمز للقدم الأمامية = الانحراف القطري + (الانحراف الزاوي * المسافة للقدم الأمامية / القطر)
+    const shimFront = vOffset + (vGap * L1 / dia);
+    // كمية الشيمز للقدم الخلفية = الانحراف القطري + (الانحراف الزاوي * (المسافة للأمامية + المسافة بين الأقدام) / القطر)
+    const shimRear = vOffset + (vGap * (L1 + L2) / dia);
+
+    // 5. عرض النتائج وتفسير الاتجاه
+    document.getElementById('vFront').innerText = Math.abs(shimFront).toFixed(2) + " مم " + (shimFront >= 0 ? "(إضافة رقائق Shim UP)" : "(إزالة رقائق Shim DOWN)");
+    document.getElementById('vRear').innerText = Math.abs(shimRear).toFixed(2) + " مم " + (shimRear >= 0 ? "(إضافة رقائق Shim UP)" : "(إزالة رقائق Shim DOWN)");
+    
+    document.getElementById('hOffset').innerText = Math.abs(hOffsetVal).toFixed(3) + " مم " + (hOffsetVal >= 0 ? "(دفع جهة اليمين)" : "(دفع جهة اليسار)");
+
+    // إظهار الصندوق
+    document.getElementById('resultsBox').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
