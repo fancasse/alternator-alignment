@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlTag">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +14,19 @@
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
             --text-color: #2d3748;
+            --header-bg: #edf2f7;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #90cdf4;
+            --secondary-color: #4299e1;
+            --success-color: #48bb78;
+            --danger-color: #f56565;
+            --bg-color: #1a202c;
+            --card-bg: #2d3748;
+            --border-color: #4a5568;
+            --text-color: #e2e8f0;
+            --header-bg: #4a5568;
         }
 
         body {
@@ -23,33 +36,20 @@
             padding: 20px;
             color: var(--text-color);
             line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .lang-bar {
+        .top-bar {
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
             max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 20px auto;
         }
 
-        .btn-lang {
-            padding: 6px 12px;
-            background-color: #edf2f7;
-            color: #4a5568;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-lang.active {
-            background-color: var(--secondary-color);
-            color: white;
-            border-color: var(--secondary-color);
+        .controls-group {
+            display: flex;
+            gap: 10px;
         }
 
         .container {
@@ -60,6 +60,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border-color);
+            transition: background 0.3s, border 0.3s;
         }
 
         h1 {
@@ -83,7 +84,7 @@
             padding: 25px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: #ffffff;
+            background: var(--card-bg);
         }
 
         .section-title {
@@ -96,11 +97,11 @@
         }
 
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; }
 
         .face-table-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
             gap: 12px;
             align-items: center;
             margin-bottom: 10px;
@@ -108,8 +109,8 @@
 
         .table-header {
             font-weight: bold;
-            color: var(--primary-color);
-            background: #edf2f7;
+            color: var(--text-color);
+            background: var(--header-bg);
             padding: 10px;
             text-align: center;
             border-radius: 4px;
@@ -118,8 +119,8 @@
 
         .row-label {
             font-weight: 600;
-            color: #4a5568;
-            font-size: 14px;
+            padding-right: 5px;
+            font-size: 13px;
         }
 
         .dynamic-distances {
@@ -128,7 +129,7 @@
             gap: 15px;
             margin-top: 15px;
             padding: 15px;
-            background: #f8fafc;
+            background: var(--bg-color);
             border-radius: 6px;
             border: 1px dashed var(--border-color);
         }
@@ -138,107 +139,77 @@
             margin-bottom: 6px;
             font-size: 13px;
             font-weight: 600;
-            color: #4a5568;
         }
 
         input, select {
             width: 100%;
             padding: 10px 12px;
             box-sizing: border-box;
-            border: 1px solid #cbd5e0;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 14px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
+        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        button {
+            padding: 12px 24px; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;
         }
-
-        button.action-btn {
-            padding: 12px 24px;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
         .btn-calc { background-color: var(--secondary-color); flex: 3; }
-        .btn-calc:hover { background-color: #2b6cb0; }
-        .btn-reset { background-color: #edf2f7; color: #4a5568; flex: 1; border: 1px solid #cbd5e0; }
-        .btn-reset:hover { background-color: #e2e8f0; }
+        .btn-calc:hover { opacity: 0.9; }
+        .btn-reset { background-color: #718096; flex: 1; }
 
         .results {
-            margin-top: 35px;
-            padding: 25px;
-            background: #f0fff4;
-            border: 1px solid #38a169;
-            border-radius: 8px;
-            display: none;
+            margin-top: 35px; padding: 25px; border-radius: 8px; display: none;
+            background: var(--card-bg); border: 2px solid var(--success-color);
         }
 
         .result-card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border-inline-start: 4px solid var(--secondary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            background: var(--bg-color); padding: 20px; border-radius: 6px; margin-bottom: 20px; border-inline-start: 4px solid var(--secondary-color);
         }
 
         .result-item {
-            margin-bottom: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            border-bottom: 1px dashed #edf2f7;
-            padding-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 12px; font-size: 15px; font-weight: 500; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        .result-item span { font-weight: 700; color: var(--danger-color); font-size: 16px; }
+        .result-item span { font-weight: 700; color: var(--danger-color); }
 
         .visual-container {
-            text-align: center;
-            margin-top: 20px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
+            text-align: center; margin-top: 20px; background: var(--bg-color); padding: 20px; border-radius: 6px; border: 1px solid var(--border-color); overflow-x: auto;
         }
 
-        #validityMsg {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            font-size: 14px;
-        }
+        #validityMsg { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: 600; font-size: 14px; }
+        
+        /* التنسيقات الخاصة باتجاه اللغة */
+        body.ltr { dir: ltr; text-align: left; }
+        body.ltr .face-table-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; }
     </style>
 </head>
 <body>
 
-<div class="lang-bar">
-    <button class="btn-lang active" onclick="switchLanguage('ar')">العربية</button>
-    <button class="btn-lang" onclick="switchLanguage('en')">English</button>
-    <button class="btn-lang" onclick="switchLanguage('fr')">Français</button>
+<div class="top-bar">
+    <div class="controls-group">
+        <select id="langSelect" onchange="changeLanguage()" style="width: 120px;">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+        </select>
+    </div>
+    <button onclick="toggleTheme()" id="themeBtn" style="background:#4a5568; padding:8px 15px; font-size:13px;">🌙 الوضع الليلي</button>
 </div>
 
 <div class="container">
     <h1 id="txt-title">حاسبة محاذاة التوربينات والمولدات (Rim & Face)</h1>
-    <div class="subtitle" id="txt-subtitle">أداة هندسية ميدانية لحساب قيم الشيمز والحركة الجانبية لخطوط الإنتاج والأرجل المتعددة</div>
+    <div id="txt-subtitle" class="subtitle">أداة هندسية ميدانية لحساب قيم الشيمز والحركة الجانبية لخطوط الإنتاج والأرجل المتعددة</div>
 
-    <!-- 1. Structural Settings -->
+    <!-- 1. الإعدادات الهيكلية -->
     <div class="section">
-        <div class="section-title" id="txt-sec1">⚡ 1. الإعدادات الهيكلية ونوع المعدة</div>
+        <div id="txt-sec1" class="section-title">⚡ 1. الإعدادات الهيكلية ونوع المعدة</div>
         <div class="grid-2">
             <div>
-                <label id="lbl-legs">إجمالي عدد أرجل المعدة (المتحركة):</label>
+                <label id="txt-legs-label">إجمالي عدد أرجل المعدة (المتحركة):</label>
                 <select id="legsCount" onchange="generateDistanceInputs()">
                     <option value="4">4</option>
                     <option value="6">6</option>
@@ -248,39 +219,39 @@
                 </select>
             </div>
             <div>
-                <label id="lbl-dia">قطر القارنة المعاير (D) مم:</label>
+                <label id="txt-diam-label">قطر القارنة المعاير (D) مم:</label>
                 <input type="number" id="couplingDiam" step="any" value="625">
             </div>
         </div>
     </div>
 
-    <!-- 2. Dimensions -->
+    <!-- 2. الأبعاد والمسافات -->
     <div class="section">
-        <div class="section-title" id="txt-sec2">📐 2. الأبعاد والمسافات البينية (بالمليمتر)</div>
+        <div id="txt-sec2" class="section-title">📐 2. الأبعاد والمسافات البينية (بالمليمتر)</div>
         <div style="max-width: 280px; margin-bottom: 10px;">
-            <label id="lbl-l1">المسافة من القارنة إلى الرجل الأولى (L1):</label>
+            <label id="txt-l1-label">المسافة من القارنة إلى الرجل الأولى (L1):</label>
             <input type="number" id="distFront" step="any" value="660">
         </div>
         <div id="dynamicDistancesContainer" class="dynamic-distances"></div>
     </div>
 
-    <!-- 3. Rim Readings -->
+    <!-- 3. قراءات الـ Rim -->
     <div class="section">
-        <div class="section-title" id="txt-sec3">⭕ 3. قراءات المحيط Rim (بالـ ميكرومتر μm)</div>
+        <div id="txt-sec3" class="section-title">⭕ 3. قراءات المحيط Rim (ساعة القياس ميكرومتر μm)</div>
         <div class="grid-4">
-            <div><label id="lbl-r0">0° (Top / علوي):</label><input type="number" id="rim0" value="900"></div>
-            <div><label id="lbl-r90">90° (Right / يمين):</label><input type="number" id="rim90" value="562"></div>
-            <div><label id="lbl-r180">180° (Bottom / سفلي):</label><input type="number" id="rim180" value="306"></div>
-            <div><label id="lbl-r270">270° (Left / يسار):</label><input type="number" id="rim270" value="637"></div>
+            <div><label id="txt-r0">0° (Top / علوي):</label><input type="number" id="rim0" value="900"></div>
+            <div><label id="txt-r90">90° (Right / يمين):</label><input type="number" id="rim90" value="562"></div>
+            <div><label id="txt-r180">180° (Bottom / سفلي):</label><input type="number" id="rim180" value="306"></div>
+            <div><label id="txt-r270">270° (Left / يسار):</label><input type="number" id="rim270" value="637"></div>
         </div>
     </div>
 
-    <!-- 4. Face Readings -->
+    <!-- 4. قراءات الوجه -->
     <div class="section">
-        <div class="section-title" id="txt-sec4">📋 4. قراءات الوجه Face (حجارة قياس الفجوات مم)</div>
+        <div id="txt-sec4" class="section-title">📋 4. قراءات الوجه Face (حجارة قياس الفجوات مم)</div>
         
         <div class="face-table-grid">
-            <div class="table-header" id="th-angle">زاوية التدوير</div>
+            <div id="th-angle" class="table-header">زاوية التدوير</div>
             <div class="table-header">H (Top)</div>
             <div class="table-header">G (Left)</div>
             <div class="table-header">B (Bottom)</div>
@@ -288,216 +259,165 @@
         </div>
 
         <div class="face-table-grid">
-            <div class="row-label" id="row-f0">عند الزاوية 0°:</div>
+            <div id="lbl-f0" class="row-label">عند الزاوية 0°:</div>
             <input type="number" id="f0_H" value="11.80"><input type="number" id="f0_G" value="12.03"><input type="number" id="f0_B" value="12.31"><input type="number" id="f0_D" value="12.05">
         </div>
         <div class="face-table-grid">
-            <div class="row-label" id="row-f90">عند الزاوية 90°:</div>
+            <div id="lbl-f90" class="row-label">عند الزاوية 90°:</div>
             <input type="number" id="f90_H" value="11.79"><input type="number" id="f90_G" value="12.00"><input type="number" id="f90_B" value="12.27"><input type="number" id="f90_D" value="12.03">
         </div>
         <div class="face-table-grid">
-            <div class="row-label" id="row-f180">عند الزاوية 180°:</div>
+            <div id="lbl-f180" class="row-label">عند الزاوية 180°:</div>
             <input type="number" id="f180_H" value="11.74"><input type="number" id="f180_G" value="12.03"><input type="number" id="f180_B" value="12.26"><input type="number" id="f180_D" value="12.01">
         </div>
         <div class="face-table-grid">
-            <div class="row-label" id="row-f270">عند الزاوية 270°:</div>
+            <div id="lbl-f270" class="row-label">عند الزاوية 270°:</div>
             <input type="number" id="f270_H" value="11.69"><input type="number" id="f270_G" value="11.96"><input type="number" id="f270_B" value="12.21"><input type="number" id="f270_D" value="11.95">
         </div>
     </div>
 
     <div class="btn-group">
-        <button class="action-btn btn-calc" id="btn-calculate" onclick="calculateAlignment()">احسب وتوليد المخطط الميداني</button>
-        <button class="action-btn btn-reset" id="btn-clear" onclick="resetForm()">تصفير الحقول</button>
+        <button id="btn-submit" class="btn-calc" onclick="calculateAlignment()">احسب وتوليد المخطط الميداني</button>
+        <button id="btn-clear" class="btn-reset" onclick="resetForm()">تصفير الحقول</button>
     </div>
 
-    <!-- OutBox Results -->
+    <!-- صندوق النتائج الميدانية -->
     <div id="resultsBox" class="results">
-        <h2 id="txt-report-title" style="color: #22543d; border-bottom: 2px solid #cbd5e0; padding-bottom: 10px; margin-top:0;">📋 تقرير التصحيح الميداني</h2>
+        <h2 id="txt-rep-title" style="margin-top:0;">📋 تقرير التصحيح الميداني</h2>
         <div id="validityMsg"></div>
         
         <div class="result-card">
-            <div class="section-title" id="txt-res-v" style="border:none; margin-bottom:10px;">📦 الرقائق المعدنية المطلوبة عمودياً (Shims)</div>
+            <div id="txt-v-title" style="font-weight:bold; margin-bottom:10px;">📦 الرقائق المعدنية المطلوبة عمودياً (Shims)</div>
             <div id="shimsResultsContainer"></div>
         </div>
 
         <div class="result-card">
-            <div class="section-title" id="txt-res-h" style="border:none; margin-bottom:10px;">↔️ تحركات التعديل الأفقي (Horizontal)</div>
-            <div class="result-item"><div id="txt-h-label">مقدار حركة جميع الأرجل بالتوازي أفقياً:</div> <span id="hOffset">--</span></div>
+            <div id="txt-h-title" style="font-weight:bold; margin-bottom:10px;">↔️ تحركات التعديل الأفقي (Horizontal)</div>
+            <div class="result-item"><div id="txt-h-item">مقدار حركة جميع الأرجل بالتوازي أفقياً:</div> <span id="hOffset">--</span></div>
         </div>
 
         <div class="visual-container">
-            <div class="section-title" id="txt-chart-title" style="border:none; margin-bottom:15px; justify-content:center; text-align:center;">🗺️ مخطط محاكاة الأرجل الحركي لتوزيع الشيمز</div>
+            <div id="txt-map-title" style="font-weight:bold; margin-bottom:15px;">🗺️ مخطط محاكاة الأرجل الحركي لتوزيع الشيمز</div>
             <div id="svgVisual" style="min-width: 750px; margin: 0 auto;"></div>
         </div>
     </div>
 </div>
 
 <script>
-let currentLang = 'ar';
-
 const dictionary = {
     ar: {
         title: "حاسبة محاذاة التوربينات والمولدات (Rim & Face)",
         subtitle: "أداة هندسية ميدانية لحساب قيم الشيمز والحركة الجانبية لخطوط الإنتاج والأرجل المتعددة",
-        sec1: "⚡ 1. الإعدادات الهيكلية ونوع المعدة",
-        legs: "إجمالي عدد أرجل المعدة (المتحركة):",
-        dia: "قطر القارنة المعاير (D) مم:",
-        sec2: "📐 2. الأبعاد والمسافات البينية (بالمليمتر)",
-        l1: "المسافة من القارنة إلى الرجل الأولى (L1):",
-        pairLabel: "من الرجل {i} إلى الرجل {j} مم:",
-        sec3: "⭕ 3. قراءات المحيط Rim (بالـ ميكرومتر μm)",
-        r0: "0° (Top / علوي):", r90: "90° (Right / يمين):", r180: "180° (Bottom / سفلي):", r270: "270° (Left / يسار):",
-        sec4: "📋 4. قراءات الوجه Face (حجارة قياس الفجوات مم)",
-        thAngle: "زاوية التدوير",
-        f0: "عند الزاوية 0°:", f90: "عند الزاوية 90°:", f180: "عند الزاوية 180°:", f270: "عند الزاوية 270°:",
-        btnCalc: "احسب وتوليد المخطط الميداني",
-        btnReset: "تصفير الحقول",
-        reportTitle: "📋 تقرير التصحيح الميداني",
-        resV: "📦 الرقائق المعدنية المطلوبة عمودياً (Shims)",
-        resH: "↔️ تحركات التعديل الأفقي (Horizontal)",
-        hLabel: "مقدار حركة جميع الأرجل بالتوازي أفقياً:",
-        chartTitle: "🗺️ مخطط محاكاة الأرجل الحركي لتوزيع الشيمز",
-        validGood: "✅ قراءات الـ Rim ممتازة ومتزنة هندسياً في الاتجاهين.",
-        validBad: "⚠️ تنبيه الفني: قراءات الـ Rim بها انحراف عشوائي ({val} μm). يرجى فحص إحكام تركيب ساعة القياس.",
-        footText: "رجل", Add: "(إضافة)", Remove: "(إزالة)", Right: "(دفع يميناً 👉)", Left: "(دفع يساراً 👈)",
-        statFixed: "التوربين الثابت", statMovable: "المعدة المراد ضبطها",
-        legendAdd: "إضافة رقائق (Shim UP)", legendRem: "إزالة رقائق (Shim DOWN)", legendHoriz: "الحركة الأفقية المشتركة:"
+        sec1: "⚡ 1. الإعدادات الهيكلية ونوع المعدة", legsLabel: "إجمالي عدد أرجل المعدة (المتحركة):", diamLabel: "قطر القارنة المعاير (D) مم:",
+        sec2: "📐 2. الأبعاد والمسافات البينية (بالمليمتر)", l1Label: "المسافة من القارنة إلى الرجل الأولى (L1):",
+        sec3: "⭕ 3. قراءات المحيط Rim (ساعة القياس ميكرومتر μm)", r0: "0° (Top / علوي):", r90: "90° (Right / يمين):", r180: "180° (Bottom / سفلي):", r270: "270° (Left / يسار):",
+        sec4: "📋 4. قراءات الوجه Face (حجارة قياس الفجوات مم)", thAngle: "زاوية التدوير", f0: "عند الزاوية 0°:", f90: "عند الزاوية 90°:", f180: "عند الزاوية 180°:", f270: "عند الزاوية 270°:",
+        btnCalc: "احسب وتوليد المخطط الميداني", btnReset: "تصفير الحقول", repTitle: "📋 تقرير التصحيح الميداني", vTitle: "📦 الرقائق المعدنية المطلوبة عمودياً (Shims)", hTitle: "↔️ تحركات التعديل الأفقي (Horizontal)",
+        hItem: "مقدار حركة جميع الأرجل بالتوازي أفقياً:", mapTitle: "🗺️ مخطط محاكاة الأرجل الحركي لتوزيع الشيمز",
+        add: "إضافة", remove: "إزالة", right: "دفع يميناً 👉", left: "دفع يساراً 👈", legNum: "الرجل رقم", distFromC: "مسافة", mmFromC: "مم من القارنة",
+        validOk: "✅ قراءات الـ Rim ممتازة ومتزنة هندسياً في الاتجاهين.", validErr: "⚠️ تنبيه الفني: قراءات الـ Rim بها انحراف عشوائي. يرجى إعادة الفحص.",
+        shUp: "إضافة رقائق (Shim UP)", shDown: "إزالة رقائق (Shim DOWN)", hComm: "الحركة الأفقية المشتركة:", turb: "التوربين الثابت", gen: "المعدة المراد ضبطها"
     },
     en: {
         title: "Turbine & Generator Alignment Calculator (Rim & Face)",
-        subtitle: "Field engineering tool for calculating shims and lateral movement for multi-bearing shafts",
-        sec1: "⚡ 1. Structural Configuration & Equipment Type",
-        legs: "Total Number of Movable Machine Feet:",
-        dia: "Calibrated Coupling Diameter (D) mm:",
-        sec2: "📐 2. Dimensions & Inter-foot Distances (mm)",
-        l1: "Distance from Coupling to First Foot (L1):",
-        pairLabel: "From Foot {i} to Foot {j} mm:",
-        sec3: "⭕ 3. Rim Dial Indicator Readings (in Micrometers μm)",
-        r0: "0° (Top):", r90: "90° (Right):", r180: "180° (Bottom):", r270: "270° (Left):",
-        sec4: "📋 4. Face Gap Readings (Block Gauges in mm)",
-        thAngle: "Rotation Angle",
-        f0: "At Angle 0°:", f90: "At Angle 90°:", f180: "At Angle 180°:", f270: "At Angle 270°:",
-        btnCalc: "Calculate & Generate Field Chart",
-        btnReset: "Reset All Fields",
-        reportTitle: "📋 Field Correction Report",
-        resV: "📦 Required Vertical Adjustments (Shims)",
-        resH: "↔️ Required Horizontal Adjustments",
-        hLabel: "Parallel side-to-side correction value for all feet:",
-        chartTitle: "🗺️ Dynamic Graphic Schema for Shim Distribution",
-        validGood: "✅ Rim readings are perfectly geometric and balanced in both directions.",
-        validBad: "⚠️ Technician Alert: Rim dataset shows random runout deviation ({val} μm). Inspect indicator rigging rigidity.",
-        footText: "Foot", Add: "(Add / SHIM UP)", Remove: "(Remove / SHIM DOWN)", Right: "(Push Right 👉)", Left: "(Push Left 👈)",
-        statFixed: "Fixed Turbine", statMovable: "Movable Machine",
-        legendAdd: "Add Shims (Shim UP)", legendRem: "Remove Shims (Shim DOWN)", legendHoriz: "Joint Horizontal Shift:"
+        subtitle: "Field engineering tool to calculate shims and horizontal movement for multi-bearing shafts",
+        sec1: "⚡ 1. Structural Settings & Machine Type", legsLabel: "Total Movable Machine Feet:", diamLabel: "Coupling Diameter (D) mm:",
+        sec2: "📐 2. Dimensions & Inter-distances (mm)", l1Label: "Coupling to First Foot Distance (L1):",
+        sec3: "⭕ 3. Rim Measurements (Dial Gauge in μm)", r0: "0° (Top):", r90: "90° (Right):", r180: "180° (Bottom):", r270: "270° (Left):",
+        sec4: "📋 4. Face Measurements (Block Gauges in mm)", thAngle: "Rotation Angle", f0: "At Angle 0°:", f90: "At Angle 90°:", f180: "At Angle 180°:", f270: "At Angle 270°:",
+        btnCalc: "Calculate & Generate Field Diagram", btnReset: "Clear Fields", repTitle: "📋 Field Correction Report", vTitle: "📦 Required Vertical Shims", hTitle: "↔️ Horizontal Adjustments",
+        hItem: "Parallel horizontal shift for all feet:", mapTitle: "🗺️ Kinetic Foot Simulation Map for Shim Distribution",
+        add: "Add", remove: "Remove", right: "Push Right 👉", left: "Push Left 👈", legNum: "Foot No.", distFromC: "at distance", mmFromC: "mm from coupling",
+        validOk: "✅ Rim readings are mathematically valid and stable.", validErr: "⚠️ Technician Alert: Rim readings contain runout/error. Please recheck.",
+        shUp: "Add Shims (Shim UP)", shDown: "Remove Shims (Shim DOWN)", hComm: "Common Horizontal Shift:", turb: "Fixed Turbine", gen: "Movable Machine"
     },
     fr: {
         title: "Calculateur d'Alignement Turbine & Alternateur (Rim & Face)",
-        subtitle: "Outil d'ingénierie de terrain pour calculer les cales (shims) et les déplacements latéraux",
-        sec1: "⚡ 1. Configuration Structurelle & Type d'Équipement",
-        legs: "Nombre Total de Pieds de la Machine Mobile:",
-        dia: "Diamètre d'Accouplement Étalonné (D) mm:",
-        sec2: "📐 2. Dimensions & Distances Entre-pieds (mm)",
-        l1: "Distance de l'Accouplement au Premier Pied (L1):",
-        pairLabel: "Du Pied {i} au Pied {j} mm:",
-        sec3: "⭕ 3. Lectures du Comparateur sur Jante (Rim en Micromètres μm)",
-        r0: "0° (Haut):", r90: "90° (Droite):", r180: "180° (Bas):", r270: "270° (Gauche):",
-        sec4: "📋 4. Lectures d'Écartement de Face (Cales d'Épaisseur en mm)",
-        thAngle: "Angle de Rotation",
-        f0: "À l'Angle 0°:", f90: "À l'Angle 90°:", f180: "À l'Angle 180°:", f270: "À l'Angle 270°:",
-        btnCalc: "Calculer & Générer le Schéma",
-        btnReset: "Réinitialiser les Champs",
-        reportTitle: "📋 Rapport de Correction de Terrain",
-        resV: "📦 Ajustements Verticaux Requis (Cales/Shims)",
-        resH: "↔️ Ajustements Horizontaux Requis",
-        hLabel: "Valeur de correction latérale parallèle pour tous les pieds:",
-        chartTitle: "🗺️ Schéma Graphique Dynamique pour la Distribution des Cales",
-        validGood: "✅ Les lectures Rim sont géométriquement excellentes et équilibrées.",
-        validBad: "⚠️ Alerte Technicien: Écart de faux-rond détecté dans les valeurs Rim ({val} μm). Vérifier la rigidité du support.",
-        footText: "Pied", Add: "(Ajouter)", Remove: "(Retirer)", Right: "(Pousser à Droite 👉)", Left: "(Pousser à Gauche 👈)",
-        statFixed: "Turbine Fixe", statMovable: "Machine Mobile",
-        legendAdd: "Ajouter Cales (Shim UP)", legendRem: "Retirer Cales (Shim DOWN)", legendHoriz: "Déplacement Horiz. Conjoint:"
+        subtitle: "Outil d'ingénierie de terrain pour calculer les cales (shims) et les corrections horizontales",
+        sec1: "⚡ 1. Paramètres Structurels & Type de Machine", legsLabel: "Nombre Total de Pieds Mobiles:", diamLabel: "Diamètre de l'Accouplement (D) mm:",
+        sec2: "📐 2. Dimensions & Entراxes (mm)", l1Label: "Distance Accouplement au 1er Pied (L1):",
+        sec3: "⭕ 3. Mesures Périphériques Rim (Comparateur en μm)", r0: "0° (Haut / Top):", r90: "90° (Droite / Right):", r180: "180° (Bas / Bottom):", r270: "270° (Gauche / Left):",
+        sec4: "📋 4. Mesures Faciales Face (Cales d'épaisseur en mm)", thAngle: "Angle de Rotation", f0: "À l'Angle 0°:", f90: "À l'Angle 90°:", f180: "À l'Angle 180°:", f270: "À l'Angle 270°:",
+        btnCalc: "Calculer & Générer le Diagramme", btnReset: "Effacer", repTitle: "📋 Rapport de Correction de Terrain", vTitle: "📦 Cales Verticales Requises (Shims)", hTitle: "↔️ Ajustements Horizontaux",
+        hItem: "Déplacement horizontal parallèle pour tous les pieds:", mapTitle: "🗺️ Carte de Simulation Cinétique des Pieds pour la Répartition des Cales",
+        add: "Ajouter", remove: "Retirer", right: "Pousser à Droite 👉", left: "Pousser à Gauche 👈", legNum: "Pied N°", distFromC: "à une distance de", mmFromC: "mm de l'accouplement",
+        validOk: "✅ Les lectures Rim sont mathématiquement valides et stables.", validErr: "⚠️ Alerte Technicien: Les lectures Rim contiennent une erreur de faux-rond. Veuillez revérifier.",
+        shUp: "Ajouter des cales (Shim UP)", shDown: "Retirer des cales (Shim DOWN)", hComm: "Déplacement Horizontal Commun:", turb: "Turbine Fixe", gen: "Machine Mobile"
     }
 };
 
-function switchLanguage(lang) {
-    currentLang = lang;
-    const htmlTag = document.getElementById('htmlTag');
-    const btns = document.querySelectorAll('.btn-lang');
+function changeLanguage() {
+    const lang = document.getElementById('langSelect').value;
+    const l = dictionary[lang];
     
-    btns.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    document.getElementById('txt-title').innerText = l.title;
+    document.getElementById('txt-subtitle').innerText = l.subtitle;
+    document.getElementById('txt-sec1').innerText = l.sec1;
+    document.getElementById('txt-legs-label').innerText = l.legsLabel;
+    document.getElementById('txt-diam-label').innerText = l.diamLabel;
+    document.getElementById('txt-sec2').innerText = l.sec2;
+    document.getElementById('txt-l1-label').innerText = l.l1Label;
+    document.getElementById('txt-sec3').innerText = l.sec3;
+    document.getElementById('txt-r0').innerText = l.r0;
+    document.getElementById('txt-r90').innerText = l.r90;
+    document.getElementById('txt-r180').innerText = l.r180;
+    document.getElementById('txt-r270').innerText = l.r270;
+    document.getElementById('txt-sec4').innerText = l.sec4;
+    document.getElementById('th-angle').innerText = l.thAngle;
+    document.getElementById('lbl-f0').innerText = l.f0;
+    document.getElementById('lbl-f90').innerText = l.f90;
+    document.getElementById('lbl-f180').innerText = l.f180;
+    document.getElementById('lbl-f270').innerText = l.f270;
+    document.getElementById('btn-submit').innerText = l.btnCalc;
+    document.getElementById('btn-clear').innerText = l.btnReset;
+    document.getElementById('txt-rep-title').innerText = l.repTitle;
+    document.getElementById('txt-v-title').innerText = l.vTitle;
+    document.getElementById('txt-h-title').innerText = l.hTitle;
+    document.getElementById('txt-h-item').innerText = l.hItem;
+    document.getElementById('txt-map-title').innerText = l.mapTitle;
 
-    if(lang === 'ar') {
-        htmlTag.setAttribute('dir', 'rtl');
-        htmlTag.setAttribute('lang', 'ar');
+    if (lang === 'ar') {
+        document.body.classList.remove('ltr');
+        document.body.dir = 'rtl';
     } else {
-        htmlTag.setAttribute('dir', 'ltr');
-        htmlTag.setAttribute('lang', lang);
+        document.body.classList.add('ltr');
+        document.body.dir = 'ltr';
     }
-
-    // تطبيق الترجمات على النصوص الواجهة
-    document.getElementById('txt-title').innerText = dictionary[lang].title;
-    document.getElementById('txt-subtitle').innerText = dictionary[lang].subtitle;
-    document.getElementById('txt-sec1').innerText = dictionary[lang].sec1;
-    document.getElementById('lbl-legs').innerText = dictionary[lang].legs;
-    document.getElementById('lbl-dia').innerText = dictionary[lang].dia;
-    document.getElementById('txt-sec2').innerText = dictionary[lang].sec2;
-    document.getElementById('lbl-l1').innerText = dictionary[lang].l1;
-    document.getElementById('txt-sec3').innerText = dictionary[lang].sec3;
-    document.getElementById('lbl-r0').innerText = dictionary[lang].r0;
-    document.getElementById('lbl-r90').innerText = dictionary[lang].r90;
-    document.getElementById('lbl-r180').innerText = dictionary[lang].r180;
-    document.getElementById('lbl-r270').innerText = dictionary[lang].r270;
-    document.getElementById('txt-sec4').innerText = dictionary[lang].sec4;
-    document.getElementById('th-angle').innerText = dictionary[lang].thAngle;
-    document.getElementById('row-f0').innerText = dictionary[lang].f0;
-    document.getElementById('row-f90').innerText = dictionary[lang].f90;
-    document.getElementById('row-f180').innerText = dictionary[lang].f180;
-    document.getElementById('row-f270').innerText = dictionary[lang].f270;
-    document.getElementById('btn-calculate').innerText = dictionary[lang].btnCalc;
-    document.getElementById('btn-clear').innerText = dictionary[lang].btnReset;
-    
-    document.getElementById('txt-report-title').innerText = dictionary[lang].reportTitle;
-    document.getElementById('txt-res-v').innerText = dictionary[lang].resV;
-    document.getElementById('txt-res-h').innerText = dictionary[lang].resH;
-    document.getElementById('txt-h-label').innerText = dictionary[lang].hLabel;
-    document.getElementById('txt-chart-title').innerText = dictionary[lang].chartTitle;
-
-    generateDistanceInputs(true);
+    generateDistanceInputs();
 }
 
-function generateDistanceInputs(keepValues = false) {
+function generateDistanceInputs() {
     const legs = parseInt(document.getElementById('legsCount').value);
     const container = document.getElementById('dynamicDistancesContainer');
-    
-    // الاحتفاظ بالقيم الحالية قبل المسح لتجنب مسح بيانات المهندس أثناء تبديل اللغات
-    let savedVals = [];
-    if(keepValues) {
-        const distancePairs = (legs / 2) - 1;
-        for(let i = 1; i <= distancePairs; i++) {
-            let inp = document.getElementById(`dist_L${i+1}`);
-            if(inp) savedVals.push(inp.value);
-        }
-    }
-
+    const lang = document.getElementById('langSelect').value;
     container.innerHTML = '';
+    
     const distancePairs = (legs / 2) - 1;
     
     for(let i = 1; i <= distancePairs; i++) {
         const div = document.createElement('div');
-        let labelText = dictionary[currentLang].pairLabel.replace('{i}', i).replace('{j}', i+1);
-        let defaultVal = (i === 1 && legs === 4) ? 10417 : 1500;
-        if(keepValues && savedVals[i-1] !== undefined) defaultVal = savedVals[i-1];
-
+        let labelText = lang === 'ar' ? `من الرجل ${i} إلى الرجل ${i+1} (L${i+1}) مم:` : lang === 'fr' ? `Du pied ${i} au pied ${i+1} (L${i+1}) mm:` : `From Foot ${i} to Foot ${i+1} (L${i+1}) mm:`;
         div.innerHTML = `
             <label>${labelText}</label>
-            <input type="number" id="dist_L${i+1}" step="any" value="${defaultVal}">
+            <input type="number" id="dist_L${i+1}" step="any" value="${i === 1 && legs === 4 ? 10417 : 1500}">
         `;
         container.appendChild(div);
     }
 }
 
 generateDistanceInputs();
+
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('themeBtn');
+    if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        btn.innerText = "🌙 الوضع الليلي / Dark Mode";
+    } else {
+        body.setAttribute('data-theme', 'dark');
+        btn.innerText = "☀️ الوضع النهارى / Light Mode";
+    }
+}
 
 function resetForm() {
     const inputs = document.querySelectorAll('input');
@@ -506,6 +426,8 @@ function resetForm() {
 }
 
 function calculateAlignment() {
+    const lang = document.getElementById('langSelect').value;
+    const l = dictionary[lang];
     const legs = parseInt(document.getElementById('legsCount').value);
     const dia = parseFloat(document.getElementById('couplingDiam').value) || 1;
     const L1 = parseFloat(document.getElementById('distFront').value) || 0;
@@ -519,15 +441,13 @@ function calculateAlignment() {
     const validityMsg = document.getElementById('validityMsg');
     
     if(validityDiff > 0.05) {
-        validityMsg.innerHTML = dictionary[currentLang].validBad.replace('{val}', (validityDiff*1000).toFixed(0));
-        validityMsg.style.backgroundColor = "#fffaf0";
-        validityMsg.style.color = "#dd6b20";
-        validityMsg.style.border = "1px solid #fbd38d";
+        validityMsg.innerText = l.validErr;
+        validityMsg.style.backgroundColor = "rgba(221, 107, 32, 0.2)";
+        validityMsg.style.color = var(--danger-color);
     } else {
-        validityMsg.innerHTML = dictionary[currentLang].validGood;
-        validityMsg.style.backgroundColor = "#f0fff4";
-        validityMsg.style.color = "#2f855a";
-        validityMsg.style.border = "1px solid #9ae6b4";
+        validityMsg.innerText = l.validOk;
+        validityMsg.style.backgroundColor = "rgba(47, 133, 90, 0.2)";
+        validityMsg.style.color = "var(--success-color)";
     }
 
     const vOffset = (r0 - r180) / 2;
@@ -542,7 +462,8 @@ function calculateAlignment() {
     let currentTotalDist = L1;
 
     for(let i = 1; i <= distancePairs; i++) {
-        let nextDist = parseFloat(document.getElementById(`dist_L${i+1}`).value) || 0;
+        let inputEl = document.getElementById(`dist_L${i+1}`);
+        let nextDist = inputEl ? parseFloat(inputEl.value) : 1500;
         currentTotalDist += nextDist;
         accumulatedDistances.push(currentTotalDist);
     }
@@ -558,15 +479,25 @@ function calculateAlignment() {
 
         const item = document.createElement('div');
         item.className = 'result-item';
-        
-        let actionTxt = shimCalculated >= 0 ? dictionary[currentLang].Add : dictionary[currentLang].Remove;
-        let footTxt = `${dictionary[currentLang].footText} ${i+1} (${dist.toFixed(0)} mm):`;
-        
-        item.innerHTML = `<div>${footTxt}</div> <span>${Math.abs(shimCalculated).toFixed(2)} mm ${actionTxt}</span>`;
+        item.innerHTML = `<div>${l.legNum} ${i+1} (${l.distFromC} ${dist.toFixed(0)} ${l.mmFromC}):</div> <span>${Math.abs(shimCalculated).toFixed(2)} mm ${shimCalculated >= 0 ? l.add : l.remove}</span>`;
         shimsResultsContainer.appendChild(item);
     }
 
-    let hAction = hOffsetVal >= 0 ? dictionary[currentLang].Right : dictionary[currentLang].Left;
-    document.getElementById('hOffset').innerText = Math.abs(hOffsetVal).toFixed(3) + " mm " + hAction;
+    document.getElementById('hOffset').innerText = Math.abs(hOffsetVal).toFixed(3) + " mm " + (hOffsetVal >= 0 ? l.right : l.left);
 
-    
+    generateDynamicSVG(legs, shimsValues, hOffsetVal, l);
+    document.getElementById('resultsBox').style.display = 'block';
+}
+
+function generateDynamicSVG(legs, shimsValues, horiz, l) {
+    let legsDrawing = '';
+    const totalPairs = legs / 2;
+    const startX = 220;
+    const endX = 500;
+    const stepX = totalPairs > 1 ? (endX - startX) / (totalPairs - 1) : 0;
+
+    for(let i = 0; i < totalPairs; i++) {
+        let currentX = startX + (i * stepX);
+        let shimVal = shimsValues[i];
+        let color = shimVal >= 0 ? '#38a169' : '#e53e3e';
+        
